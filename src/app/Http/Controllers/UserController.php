@@ -133,6 +133,7 @@ class UserController extends Controller
             $date = Carbon::parse($attendance->date);
             $weekday = $weekdays[$date->dayOfWeek];
             return [
+                'id' => $attendance->id,
                 'date' => $date->format('m/d') . "($weekday)",
                 'clock_in' => $attendance->clock_in ? Carbon::parse($attendance->clock_in)->format('H:i') : null,
                 'clock_out' => $attendance->clock_out ? Carbon::parse($attendance->clock_out)->format('H:i') : null,
@@ -146,7 +147,22 @@ class UserController extends Controller
 
     public function detail($id)
     {
-        return view('user/user-detail');
+        $user = Auth::user();
+        $attendanceRecords = AttendanceRecord::findOrFail($id);
+
+        $attendanceRecord = [
+                'year' => $attendanceRecords->date ? Carbon::parse($attendanceRecords->date)->format('Y年') : null,
+                'date' => $attendanceRecords->date ? Carbon::parse($attendanceRecords->date)->format('m月d日') : null,
+                'clock_in' => $attendanceRecords->clock_in ? Carbon::parse($attendanceRecords->clock_in)->format('H:i') : null,
+                'clock_out' => $attendanceRecords->clock_out ? Carbon::parse($attendanceRecords->clock_out)->format('H:i') : null,
+                'break_in' => $attendanceRecords->break_in ? Carbon::parse($attendanceRecords->break_in)->format('H:i') : null,
+                'break_out' => $attendanceRecords->break_out ? Carbon::parse($attendanceRecords->break_out)->format('H:i') : null,
+                'break2_in' => $attendanceRecords->break2_in ? Carbon::parse($attendanceRecords->break2_in)->format('H:i') : null,
+                'break2_out' => $attendanceRecords->break2_out ? Carbon::parse($attendanceRecords->break2_out)->format('H:i') : null,
+                'comment' => $attendanceRecords->comment,
+            ];
+        return view('user/user-detail', compact('user', 'attendanceRecord'));
+
     }
 }
 
