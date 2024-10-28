@@ -46,16 +46,16 @@
                         <p class="table__description--item">{{ $application->user->name }}</p>
                     </td>
                     <td class="table__description">
-                        <p class="table__description--item">{{ $application->AttendanceRecord->date }}</p>
+                        <p class="table__description--item">{{ $application->AttendanceRecord->date->format('Y-m-d') }}</p>
                     </td>
                     <td class="table__description">
                         <p class="table__description--item">{{ $application->comment }}</p>
                     </td>
                     <td class="table__description">
-                        <p class="table__description--item">2024/10/21</p>
+                        <p class="table__description--item">{{ $application->application_date }}</p>
                     </td>
                     <td class="table__description">
-                        <a class="table__item--detail-link" href="">詳細</a>
+                        <a class="table__item--detail-link" href="{{ url('/attendance/' . $application->attendance_record_id) }}">詳細</a>
                     </td>
                 </tr>
                 @endif
@@ -100,7 +100,7 @@
                         <p class="table__description--item">{{ $application->comment }}</p>
                     </td>
                     <td class="table__description">
-                        <p class="table__description--item">2024/10/21</p>
+                        <p class="table__description--item">{{ $application->application_date }}</p>
                     </td>
                     <td class="table__description">
                         <a class="table__item--detail-link" href="">詳細</a>

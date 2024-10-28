@@ -159,10 +159,11 @@ class UserController extends Controller
 
     public function detail($id)
     {
-        $user = Auth::user();
         $attendanceRecords = AttendanceRecord::findOrFail($id);
+        $user = User::findOrFail($attendanceRecords->user_id);
 
         $attendanceRecord = [
+            'application' => $attendanceRecords->application,
             'id' => $attendanceRecords->id,
             'year' => $attendanceRecords->date ? Carbon::parse($attendanceRecords->date)->format('Y年') : null,
             'date' => $attendanceRecords->date ? Carbon::parse($attendanceRecords->date)->format('m月d日') : null,
@@ -187,14 +188,16 @@ class UserController extends Controller
         $amendment->user_id = $user->id;
         $amendment->attendance_record_id = $attendance->id;
         $amendment->approval_status = "承認待ち";
-        $amendment->new_clock_in = $request->new_clock_in;
-        $amendment->new_clock_out = $request->new_clock_out;
-        $amendment->new_break_in = $request->new_break_in;
-        $amendment->new_break_out = $request->new_break_out;
-        $amendment->new_break2_in = $request->new_break2_in;
-        $amendment->new_break2_out = $request->new_break2_out;
+        $amendment->application_date = now();
+        $amendment->new_clock_in = Carbon::parse($request->new_clock_in)->format('H:i');
+        $amendment->new_clock_out = Carbon::parse($request->new_clock_out)->format('H:i');
+        $amendment->new_break_in = Carbon::parse($request->new_break_in)->format('H:i');
+        $amendment->new_break_out = Carbon::parse($request->new_break_out)->format('H:i');
+        $amendment->new_break2_in = Carbon::parse($request->new_break2_in)->format('H:i');
+        $amendment->new_break2_out = Carbon::parse($request->new_break2_out)->format('H:i');
         $amendment->comment = $request->comment;
         $amendment->save();
+
 
         return redirect('/stamp_correction_request/list');
     }
@@ -203,9 +206,9 @@ class UserController extends Controller
     {
         $user = Auth::user();
         $applications = Application::all();
+        $attendance = AttendanceRecord::get('id');
 
-
-        return view('user/user-application-list', compact('user', 'applications'));
+        return view('user/user-application-list', compact('user', 'applications', 'attendance'));
     }
 }
 

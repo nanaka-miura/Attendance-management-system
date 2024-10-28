@@ -17,13 +17,14 @@ class CheckAdminStatus
      */
     public function handle(Request $request, Closure $next)
     {
-        if ($request->is('stamp_correction_request_list')) {
-            if (str_contains($request->path(), 'admin')) {
-                return redirect()->route('adminApplicationList');
-            } else {
-                return redirect()->route('userApplicationList');
-            }
+        if ($request->is('stamp_correction_request/list')) {
+        // アクセス前のパスに '/admin' が含まれているかチェック
+        if (str_contains($request->headers->get('referer'), '/admin')) {
+            // adminApplicationListにリダイレクト
+            return redirect()->route('adminApplicationList');
         }
+    }
+
         return $next($request);
     }
 }

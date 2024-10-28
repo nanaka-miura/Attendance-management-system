@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
 use App\Models\AttendanceRecord;
+use App\Models\Application;
 use Carbon\Carbon;
 
 
@@ -92,8 +93,82 @@ class AdminController extends Controller
         ]);
     }
 
+    public function amendmentApplication(Request $request, $id)
+    {
+        $attendance = AttendanceRecord::findOrFail($id);
+        $user = User::findOrFail($attendance->user_id);
+
+        $amendment = new Application();
+        $amendment->user_id = $user->id;
+        $amendment->attendance_record_id = $attendance->id;
+        $amendment->approval_status = "承認待ち";
+        $amendment->application_date = now();
+        $amendment->new_clock_in = Carbon::parse($request->new_clock_in)->format('H:i');
+        $amendment->new_clock_out = Carbon::parse($request->new_clock_out)->format('H:i');
+        $amendment->new_break_in = Carbon::parse($request->new_break_in)->format('H:i');
+        $amendment->new_break_out = Carbon::parse($request->new_break_out)->format('H:i');
+        $amendment->new_break2_in = Carbon::parse($request->new_break2_in)->format('H:i');
+        $amendment->new_break2_out = Carbon::parse($request->new_break2_out)->format('H:i');
+        $amendment->comment = $request->comment;
+        $amendment->save();
+
+
+        return redirect('/stamp_correction_request/list');
+    }
+
     public function applicationList()
     {
-        return view('admin/admin-application-list');
+        $user = User::all();
+        $applications = Application::all();
+
+        return view('admin/admin-application-list', compact('user', 'applications'));
+    }
+
+    public function approvalShow($id)
+    {
+        $application = Application::findOrFail($id);
+        $user = User::findOrFail($application->user_id);
+
+        $application->new_clock_in = Carbon::parse($application->new_clock_in)->format('H:i');
+        $application->new_clock_out = Carbon::parse($application->new_clock_out)->format('H:i');
+        $application->new_break_in = Carbon::parse($application->new_break_in)->format('H:i');
+        $application->new_break_out = Carbon::parse($application->new_break_out)->format('H:i');
+        $application->new_break2_in = Carbon::parse($application->new_break2_in)->format('H:i');
+        $application->new_break2_out = Carbon::parse($application->new_break2_out)->format('H:i');
+
+        return view('admin/admin-application-detail', compact('user', 'application'));
+    }
+
+    public function approval($id)
+    {
+        $application = Application::findOrFail($id);
+        $user = User::findOrFail($application->user_id);
+
+        $application->approval_status = "承認済み";
+        $application->save();
+
+        return redirect('/stamp_correction_request/list');
+    }
+
+    public function detail($id)
+    {
+        $attendanceRecords = AttendanceRecord::findOrFail($id);
+        $user = User::findOrFail($attendanceRecords->user_id);
+
+        $attendanceRecord = [
+            'application' => $attendanceRecords->application,
+            'id' => $attendanceRecords->id,
+            'year' => $attendanceRecords->date ? Carbon::parse($attendanceRecords->date)->format('Y年') : null,
+            'date' => $attendanceRecords->date ? Carbon::parse($attendanceRecords->date)->format('m月d日') : null,
+            'clock_in' => $attendanceRecords->clock_in ? Carbon::parse($attendanceRecords->clock_in)->format('H:i') : null,
+            'clock_out' => $attendanceRecords->clock_out ? Carbon::parse($attendanceRecords->clock_out)->format('H:i') : null,
+            'break_in' => $attendanceRecords->break_in ? Carbon::parse($attendanceRecords->break_in)->format('H:i') : null,
+            'break_out' => $attendanceRecords->break_out ? Carbon::parse($attendanceRecords->break_out)->format('H:i') : null,
+            'break2_in' => $attendanceRecords->break2_in ? Carbon::parse($attendanceRecords->break2_in)->format('H:i') : null,
+            'break2_out' => $attendanceRecords->break2_out ? Carbon::parse($attendanceRecords->break2_out)->format('H:i') : null,
+            'comment' => $attendanceRecords->comment,
+        ];
+
+        return view('admin/admin-detail', compact('user', 'attendanceRecord'));
     }
 }

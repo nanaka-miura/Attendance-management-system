@@ -9,59 +9,57 @@
     <div class="detail__header">
         <h2 class="content__header--item">勤怠詳細</h2>
     </div>
-    <form class="applied-form" action="">
+    <form class="applied-form" action="{{ url('/stamp_correction_request/approve/' . $application['id']) }}" method="post">
+        @csrf
         <div class="applied-form__content">
             <div class="applied-form__group">
                 <p class="applied-form__header">名前</p>
                 <div class="applied-form__input-group">
-                    <input class="applied-form__input" type="text" name="name" value="西　怜奈" readonly>
+                    <input class="applied-form__input" type="text" name="name" value="{{ $user->name }}" readonly>
                 </div>
             </div>
             <div class="applied-form__group">
                 <p class="applied-form__header">日付</p>
                 <div class="applied-form__input-group">
-                    <input class="applied-form__input" type="text" value="2023年" readonly>
-                    <input class="applied-form__input"  type="text" value="10月21日" readonly>
+                    <input class="applied-form__input" type="text" value="{{ $application->AttendanceRecord->date->year }}年" readonly>
+                    <input class="applied-form__input"  type="text" value="{{ $application->AttendanceRecord->date->format('m月d日') }}" readonly>
                 </div>
             </div>
             <div class="applied-form__group">
                 <p class="applied-form__header">出勤・退勤</p>
                 <div class="applied-form__input-group">
-                    <input class="applied-form__input" type="text" value="9:00" readonly>
-                    
+                    <input class="applied-form__input" type="text" value="{{ $application->new_clock_in }}" readonly>
                     <p>〜</p>
-
-                    <input class="applied-form__input" type="text" value="18:00" readonly>
+                    <input class="applied-form__input" type="text" value="{{ $application->new_clock_out }}" readonly>
                 </div>
             </div>
             <div class="applied-form__group">
                 <p class="applied-form__header">休憩</p>
                 <div class="applied-form__input-group">
-                    <input class="applied-form__input" type="text" value="12:00" readonly>
+                    <input class="applied-form__input" type="text" value="{{ $application->new_break_in }}" readonly>
                     <p>〜</p>
-                    <input class="applied-form__input" type="text" value="13:00" readonly>
+                    <input class="applied-form__input" type="text" value="{{ $application->new_break_out }}" readonly>
                 </div>
             </div>
             <div class="applied-form__group">
                 <p class="applied-form__header">休憩2</p>
                 <div class="applied-form__input-group">
-                    <input class="applied-form__input" type="text" readonly>
+                    <input class="applied-form__input" type="text" value="{{ $application->new_break2_in }}" readonly>
                     <p>〜</p>
-                    <input class="applied-form__input" type="text" readonly>
+                    <input class="applied-form__input" type="text" value="{{ $application->new_break2_out }}" readonly>
                 </div>
             </div>
             <div class="applied-form__group">
                 <p class="applied-form__header">備考</p>
                 <div class="applied-form__input-group">
-                    <textarea class="applied-form__textarea" name="comment" id="" readonly>電車遅延のため</textarea>
+                    <textarea class="applied-form__textarea" name="comment" id="" readonly>{{ $application->comment }}</textarea>
                 </div>
             </div>
         </div>
         <div class="applied-form__button">
-            @if()
-            <button class="applied-form__button--submit">承認</button>
-            @elseif
-            <button class="approved-form__button--submit">承認済み</button>
+            
+            <button class="applied-form__button--submit" type="submit">承認</button>
+            
         </div>
     </form>
 </div>
