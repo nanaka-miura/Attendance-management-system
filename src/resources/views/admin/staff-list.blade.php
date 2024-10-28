@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.admin-app')
 
 @section('css')
 <link rel="stylesheet" href="{{ asset('css/admin/staff-list.css') }}">
@@ -21,28 +21,19 @@
                 <p class="table__header--item">月次勤怠</p>
             </th>
         </tr>
+        @foreach ($users as $user)
         <tr class="table__row">
             <td class="table__description">
-                <p class="table__description--item">山田　太郎</p>
+                <p class="table__description--item">{{ $user->name }}</p>
             </td>
             <td class="table__description">
-                <p class="table__description--item">taro.y@coachtech.com</p>
+                <p class="table__description--item">{{ $user->email }}</p>
             </td>
             <td class="table__description">
-                <a class="table__item--detail-link" href="">詳細</a>
+                <a class="table__item--detail-link" href="{{ url('/admin/attendance/staff/' . $user['id']) }}">詳細</a>
             </td>
         </tr>
-        <tr class="table__row">
-            <td class="table__description">
-                <p class="table__description--item">西　怜奈</p>
-            </td>
-            <td class="table__description">
-                <p class="table__description--item">reina.n@coachtech.com</p>
-            </td>
-            <td class="table__description">
-                <a class="table__item--detail-link" href="">詳細</a>
-            </td>
-        </tr>
+        @endforeach
     </table>
 </div>
 @endsection

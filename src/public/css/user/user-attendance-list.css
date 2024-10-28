@@ -64,8 +64,13 @@
     content: '';
     display: inline-block;
     height: 20px;
+    margin-right: 5px;
     vertical-align: middle;
     width: 20px;
+}
+
+.next-month-placeholder {
+    margin-left: 50px;
 }
 
 .next-month::after {

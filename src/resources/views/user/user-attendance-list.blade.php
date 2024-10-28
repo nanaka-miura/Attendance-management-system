@@ -10,9 +10,13 @@
         <h2 class="content__header--item">勤怠一覧</h2>
     </div>
     <div class="content__menu">
-        <a class="previous-month" href="">前月</a>
-        <p class="current-month">2024/10</p>
-        <a class="next-month" href="">翌月</a>
+        <a class="previous-month" href="?date={{ $previousMonth }}">前月</a>
+        <p class="current-month">{{ $date->format('Y-m') }}</p>
+        @if ($date->lt(\Carbon\Carbon::now()->startOfMonth()))
+        <a class="next-month" href="?date={{ $nextMonth }}">翌月</a>
+        @else
+        <div class="next-month-placeholder"></div>
+        @endif
     </div>
     <table class="table">
         <tr class="table__row">

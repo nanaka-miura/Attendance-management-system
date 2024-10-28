@@ -36,18 +36,20 @@
                         <p class="table__header--item">詳細</p>
                     </th>
                 </tr>
+                @foreach ($applications as $application)
+                @if ($application->approval_status === '承認待ち')
                 <tr class="table__row">
                     <td class="table__description">
-                        <p class="table__description--item">承認待ち</p>
+                        <p class="table__description--item">{{ $application->approval_status }}</p>
                     </td>
                     <td class="table__description">
-                        <p class="table__description--item">西怜奈</p>
+                        <p class="table__description--item">{{ $application->user->name }}</p>
                     </td>
                     <td class="table__description">
-                        <p class="table__description--item">2024/10/21</p>
+                        <p class="table__description--item">{{ $application->AttendanceRecord->date }}</p>
                     </td>
                     <td class="table__description">
-                        <p class="table__description--item">遅延のため</p>
+                        <p class="table__description--item">{{ $application->comment }}</p>
                     </td>
                     <td class="table__description">
                         <p class="table__description--item">2024/10/21</p>
@@ -56,6 +58,8 @@
                         <a class="table__item--detail-link" href="">詳細</a>
                     </td>
                 </tr>
+                @endif
+                @endforeach
             </table>
         </div>
         <div class="tab__content" id="content2">
@@ -80,18 +84,20 @@
                         <p class="table__header--item">詳細</p>
                     </th>
                 </tr>
+                @foreach ($applications as $application)
+                @if ($application->approval_status === '承認済み')
                 <tr class="table__row">
                     <td class="table__description">
-                        <p class="table__description--item">承認待ち</p>
+                        <p class="table__description--item">{{ $application->approval_status }}</p>
                     </td>
                     <td class="table__description">
-                        <p class="table__description--item">山田太郎</p>
+                        <p class="table__description--item">{{ $application->user->name }}</p>
                     </td>
                     <td class="table__description">
-                        <p class="table__description--item">2024/10/21</p>
+                        <p class="table__description--item">{{ $application->AttendanceRecord->date }}</p>
                     </td>
                     <td class="table__description">
-                        <p class="table__description--item">遅延のため</p>
+                        <p class="table__description--item">{{ $application->comment }}</p>
                     </td>
                     <td class="table__description">
                         <p class="table__description--item">2024/10/21</p>
@@ -100,6 +106,8 @@
                         <a class="table__item--detail-link" href="">詳細</a>
                     </td>
                 </tr>
+                @endif
+                @endforeach
             </table>
         </div>
     </div>
