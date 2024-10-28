@@ -19,9 +19,10 @@ Route::middleware('auth')->group(function () {
     Route::get('/attendance', [UserController::class, 'index']);
     Route::post('/attendance', [UserController::class, 'attendance']);
     Route::get('/attendance/list', [UserController::class, 'list']);
+
+    Route::get('/stamp_correction_request/list', [UserController::class, 'applicationList'])->name('userApplicationList');
     Route::get('/attendance/{id}', [UserController::class, 'detail']);
     Route::post('/attendance/{id}', [UserController::class, 'amendmentApplication']);
-    Route::get('/stamp_correction_request/list', [UserController::class, 'applicationList'])->name('userApplicationList');
 });
 
 Route::middleware(['auth'])->group(function () {
@@ -29,11 +30,13 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/admin/staff/list', [AdminController::class, 'staffList']);
     Route::get('/admin/attendance/staff/{id}', [AdminController::class, 'staffDetailList']);
     Route::post('/admin/logout', [AdminController::class, 'adminLogout']);
-    Route::get('/stamp_correction_request/list', [AdminController::class, 'applicationList'])->name('adminApplicationList');
     Route::get('/stamp_correction_request/approve/{id}', [AdminController::class, 'approvalShow']);
     Route::post('/stamp_correction_request/approve/{id}', [AdminController::class, 'approval']);
+
+    Route::get('/stamp_correction_request/list', [AdminController::class, 'applicationList'])->name('adminApplicationList');
     Route::get('/attendance/{id}', [AdminController::class, 'detail']);
     Route::post('/attendance/{id}/', [AdminController::class, 'amendmentApplication']);
+    
 });
 
 Route::middleware(['admin'])->group(function () {
