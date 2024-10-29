@@ -22,31 +22,31 @@
                 <p class="form__header">日付</p>
                 <div class="form__input-group">
                     <input class="form__input" type="text" value="{{ $attendanceRecord['year'] }}">
-                    <input class="form__input"  type="text" value="{{ $attendanceRecord['date'] }}">
+                    <input class="form__input"  type="text" name="new_date" value="{{ $attendanceRecord['date'] }}">
                 </div>
             </div>
             <div class="form__group">
                 <p class="form__header">出勤・退勤</p>
                 <div class="form__input-group">
-                    <input class="form__input" type="text" value="{{ $attendanceRecord['clock_in'] }}">
+                    <input class="form__input" type="text" name="new_clock_in" value="{{ $attendanceRecord['clock_in'] }}">
                     <p>〜</p>
-                    <input class="form__input" type="text" value="{{ $attendanceRecord['clock_out'] }}">
+                    <input class="form__input" type="text" name="new_clock_out" value="{{ $attendanceRecord['clock_out'] }}">
                 </div>
             </div>
             <div class="form__group">
                 <p class="form__header">休憩</p>
                 <div class="form__input-group">
-                    <input class="form__input" type="text" value="{{ $attendanceRecord['break_in'] }}">
+                    <input class="form__input" type="text" name="new_break_in" value="{{ $attendanceRecord['break_in'] }}">
                     <p>〜</p>
-                    <input class="form__input" type="text" value="{{ $attendanceRecord['break_out'] }}">
+                    <input class="form__input" type="text" name="new_break_out" value="{{ $attendanceRecord['break_out'] }}">
                 </div>
             </div>
             <div class="form__group">
                 <p class="form__header">休憩2</p>
                 <div class="form__input-group">
-                    <input class="form__input" type="text" value="{{ $attendanceRecord['break2_in'] }}">
+                    <input class="form__input" type="text" name="new_breakw¥2_in" value="{{ $attendanceRecord['break2_in'] }}">
                     <p>〜</p>
-                    <input class="form__input" type="text" value="{{ $attendanceRecord['break2_out'] }}">
+                    <input class="form__input" type="text" name="new_break2_out" value="{{ $attendanceRecord['break2_out'] }}">
                 </div>
             </div>
             <div class="form__group">

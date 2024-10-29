@@ -61,3 +61,7 @@
     color: #0073CC;
     text-decoration: none;
 }
+
+.form__error {
+    color: #ff0000;
+}

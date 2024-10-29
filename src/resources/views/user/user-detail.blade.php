@@ -22,7 +22,7 @@
                 <p class="form__header">日付</p>
                 <div class="form__input-group">
                     <input class="form__input" type="text" value="{{ $attendanceRecord['year'] }}">
-                    <input class="form__input"  type="text" value="{{ $attendanceRecord['date'] }}">
+                    <input class="form__input"  type="text" name="new_date" value="{{ $attendanceRecord['date'] }}">
                 </div>
             </div>
             <div class="form__group">

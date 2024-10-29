@@ -12,31 +12,6 @@ use Carbon\Carbon;
 
 class AdminController extends Controller
 {
-    public function login()
-    {
-        return view('admin/admin-login');
-    }
-
-    public function doLogin(Request $request)
-    {
-        if (Auth::attempt($request->only('email', 'password'))) {
-            $user = Auth::user();
-
-            if ($user->admin_status) {
-                return redirect('admin/attendance/list');
-            } else {
-                Auth::logout();
-                return redirect('/admin/login');
-            }
-        }
-    }
-
-    public function adminLogout()
-    {
-        Auth::logout();
-        return redirect('/admin/login');
-    }
-
     public function list(Request $request)
     {
         $users = User::all();
@@ -93,6 +68,28 @@ class AdminController extends Controller
         ]);
     }
 
+    public function detail($id)
+    {
+        $attendanceRecords = AttendanceRecord::findOrFail($id);
+        $user = User::findOrFail($attendanceRecords->user_id);
+
+        $attendanceRecord = [
+            'application' => $attendanceRecords->application,
+            'id' => $attendanceRecords->id,
+            'year' => $attendanceRecords->date ? Carbon::parse($attendanceRecords->date)->format('Y年') : null,
+            'date' => $attendanceRecords->date ? Carbon::parse($attendanceRecords->date)->format('m月d日') : null,
+            'clock_in' => $attendanceRecords->clock_in ? Carbon::parse($attendanceRecords->clock_in)->format('H:i') : null,
+            'clock_out' => $attendanceRecords->clock_out ? Carbon::parse($attendanceRecords->clock_out)->format('H:i') : null,
+            'break_in' => $attendanceRecords->break_in ? Carbon::parse($attendanceRecords->break_in)->format('H:i') : null,
+            'break_out' => $attendanceRecords->break_out ? Carbon::parse($attendanceRecords->break_out)->format('H:i') : null,
+            'break2_in' => $attendanceRecords->break2_in ? Carbon::parse($attendanceRecords->break2_in)->format('H:i') : null,
+            'break2_out' => $attendanceRecords->break2_out ? Carbon::parse($attendanceRecords->break2_out)->format('H:i') : null,
+            'comment' => $attendanceRecords->comment,
+        ];
+
+        return view('admin/admin-detail', compact('user', 'attendanceRecord'));
+    }
+
     public function amendmentApplication(Request $request, $id)
     {
         $attendance = AttendanceRecord::findOrFail($id);
@@ -103,6 +100,9 @@ class AdminController extends Controller
         $amendment->attendance_record_id = $attendance->id;
         $amendment->approval_status = "承認待ち";
         $amendment->application_date = now();
+        $dateString = $request->new_date;
+        $parsedDate = Carbon::createFromFormat('n月j日', $dateString)->year(now()->year)->format('Y-m-d');
+        $amendment->new_date = $parsedDate;
         $amendment->new_clock_in = Carbon::parse($request->new_clock_in)->format('H:i');
         $amendment->new_clock_out = Carbon::parse($request->new_clock_out)->format('H:i');
         $amendment->new_break_in = Carbon::parse($request->new_break_in)->format('H:i');
@@ -129,6 +129,7 @@ class AdminController extends Controller
         $application = Application::findOrFail($id);
         $user = User::findOrFail($application->user_id);
 
+        $application->new_date = Carbon::parse($application->new_date);
         $application->new_clock_in = Carbon::parse($application->new_clock_in)->format('H:i');
         $application->new_clock_out = Carbon::parse($application->new_clock_out)->format('H:i');
         $application->new_break_in = Carbon::parse($application->new_break_in)->format('H:i');
@@ -143,32 +144,21 @@ class AdminController extends Controller
     {
         $application = Application::findOrFail($id);
         $user = User::findOrFail($application->user_id);
+        $attendanceRecord = AttendanceRecord::findOrFail($application->attendance_record_id);
 
         $application->approval_status = "承認済み";
         $application->save();
 
+        $attendanceRecord->date = $application->new_date;
+        $attendanceRecord->clock_in = $application->new_clock_in;
+        $attendanceRecord->clock_out = $application->new_clock_out;
+        $attendanceRecord->break_in = $application->new_break_in;
+        $attendanceRecord->break_out = $application->new_break_out;
+        $attendanceRecord->break2_in = $application->new_break2_in;
+        $attendanceRecord->break2_out = $application->new_break2_out;
+        $attendanceRecord->comment = $application->comment;
+        $attendanceRecord->save();
+
         return redirect('/stamp_correction_request/list');
-    }
-
-    public function detail($id)
-    {
-        $attendanceRecords = AttendanceRecord::findOrFail($id);
-        $user = User::findOrFail($attendanceRecords->user_id);
-
-        $attendanceRecord = [
-            'application' => $attendanceRecords->application,
-            'id' => $attendanceRecords->id,
-            'year' => $attendanceRecords->date ? Carbon::parse($attendanceRecords->date)->format('Y年') : null,
-            'date' => $attendanceRecords->date ? Carbon::parse($attendanceRecords->date)->format('m月d日') : null,
-            'clock_in' => $attendanceRecords->clock_in ? Carbon::parse($attendanceRecords->clock_in)->format('H:i') : null,
-            'clock_out' => $attendanceRecords->clock_out ? Carbon::parse($attendanceRecords->clock_out)->format('H:i') : null,
-            'break_in' => $attendanceRecords->break_in ? Carbon::parse($attendanceRecords->break_in)->format('H:i') : null,
-            'break_out' => $attendanceRecords->break_out ? Carbon::parse($attendanceRecords->break_out)->format('H:i') : null,
-            'break2_in' => $attendanceRecords->break2_in ? Carbon::parse($attendanceRecords->break2_in)->format('H:i') : null,
-            'break2_out' => $attendanceRecords->break2_out ? Carbon::parse($attendanceRecords->break2_out)->format('H:i') : null,
-            'comment' => $attendanceRecords->comment,
-        ];
-
-        return view('admin/admin-detail', compact('user', 'attendanceRecord'));
     }
 }

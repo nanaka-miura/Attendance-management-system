@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\AuthController;
 
 /*
 |--------------------------------------------------------------------------
@@ -29,7 +30,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/admin/attendance/list', [AdminController::class, 'list']);
     Route::get('/admin/staff/list', [AdminController::class, 'staffList']);
     Route::get('/admin/attendance/staff/{id}', [AdminController::class, 'staffDetailList']);
-    Route::post('/admin/logout', [AdminController::class, 'adminLogout']);
+    Route::post('/admin/logout', [AuthController::class, 'adminLogout']);
     Route::get('/stamp_correction_request/approve/{id}', [AdminController::class, 'approvalShow']);
     Route::post('/stamp_correction_request/approve/{id}', [AdminController::class, 'approval']);
 
@@ -43,5 +44,5 @@ Route::middleware(['admin'])->group(function () {
     
 });
 
-Route::get('/admin/login', [AdminController::class, 'login']);
-Route::post('/admin/login', [AdminController::class, 'doLogin']);
+Route::get('/admin/login', [AuthController::class, 'login']);
+Route::post('/admin/login', [AuthController::class, 'doLogin']);

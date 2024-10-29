@@ -106,12 +106,14 @@
     padding: 5px 20px;
 }
 
-.approved-form__button--submit {
+.applied-form__item {
     background: #696969;
     border: none;
     border-radius: 5px;
     color: #FFF;
+    display: inline-block;
     font-size: 16px;
     font-weight: bold;
-    padding: 5px 20px;
+    margin-top: 0px;
+    padding: 7px 20px;
 }

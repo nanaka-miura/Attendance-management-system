@@ -14,6 +14,7 @@ class Application extends Model
         'attendance_record_id',
         'approval_status',
         'application_date',
+        'new_date',
         'new_clock_in',
         'new_clock_out',
         'new_break_in',

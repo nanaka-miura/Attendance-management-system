@@ -189,6 +189,9 @@ class UserController extends Controller
         $amendment->attendance_record_id = $attendance->id;
         $amendment->approval_status = "承認待ち";
         $amendment->application_date = now();
+        $dateString = $request->new_date;
+        $parsedDate = Carbon::createFromFormat('n月j日', $dateString)->year(now()->year)->format('Y-m-d');
+        $amendment->new_date = $parsedDate;
         $amendment->new_clock_in = Carbon::parse($request->new_clock_in)->format('H:i');
         $amendment->new_clock_out = Carbon::parse($request->new_clock_out)->format('H:i');
         $amendment->new_break_in = Carbon::parse($request->new_break_in)->format('H:i');
