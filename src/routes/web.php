@@ -6,8 +6,7 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\MiddlewareController;
 use App\Http\Middleware\AdminStatusMiddleware;
-
-
+use Laravel\Fortify\Http\Controllers\VerifyEmailController;
 
 /*
 |--------------------------------------------------------------------------
@@ -44,5 +43,14 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/attendance/{id}/', [AdminController::class, 'amendmentApplication']);
 });
 
-Route::get('/admin/login', [AuthController::class, 'login']);
-Route::post('/admin/login', [AuthController::class, 'doLogin']);
+Route::get('/admin/login', [AuthController::class, 'adminLogin']);
+Route::post('/admin/login', [AuthController::class, 'adminDoLogin']);
+
+Route::post('/login', [AuthController::class, 'doLogin']);
+Route::post('/register', [AuthController::class, 'store']);
+Route::get('/email/verify', function () {
+    return view('auth.verify-email');
+})->middleware(['auth'])->name('verification.notice');
+Route::get('/email/verify/{id}/{hash}', [VerifyEmailController::class, '__invoke'])
+    ->middleware(['signed'])
+    ->name('verification.verify');

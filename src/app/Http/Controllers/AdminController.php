@@ -110,23 +110,19 @@ class AdminController extends Controller
         $amendment->new_clock_in = Carbon::parse($request->new_clock_in)->format('H:i');
         $amendment->new_clock_out = Carbon::parse($request->new_clock_out)->format('H:i');
         if ($request->new_break_in) {
-        $amendment->new_break_in = Carbon::parse($request->new_break_in)->format('H:i');
-    }
-
-    if ($request->new_break_out) {
-        $amendment->new_break_out = Carbon::parse($request->new_break_out)->format('H:i');
-    }
-
-    if ($request->new_break2_in) {
-        $amendment->new_break2_in = Carbon::parse($request->new_break2_in)->format('H:i');
-    }
-
-    if ($request->new_break2_out) {
-        $amendment->new_break2_out = Carbon::parse($request->new_break2_out)->format('H:i');
-    }
+            $amendment->new_break_in = Carbon::parse($request->new_break_in)->format('H:i');
+        }
+        if ($request->new_break_out) {
+            $amendment->new_break_out = Carbon::parse($request->new_break_out)->format('H:i');
+        }
+        if ($request->new_break2_in) {
+            $amendment->new_break2_in = Carbon::parse($request->new_break2_in)->format('H:i');
+        }
+        if ($request->new_break2_out) {
+            $amendment->new_break2_out = Carbon::parse($request->new_break2_out)->format('H:i');
+        }
         $amendment->comment = $request->comment;
         $amendment->save();
-
 
         return redirect('/stamp_correction_request/list');
     }
