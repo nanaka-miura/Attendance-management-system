@@ -37,6 +37,7 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/admin/logout', [AuthController::class, 'adminLogout']);
     Route::get('/stamp_correction_request/approve/{id}', [AdminController::class, 'approvalShow']);
     Route::post('/stamp_correction_request/approve/{id}', [AdminController::class, 'approval']);
+    Route::post('/export', [AdminController::class, 'export']);
 
     Route::get('/stamp_correction_request/list', [AdminController::class, 'applicationList'])->name('adminApplicationList')->middleware(AdminStatusMiddleware::class);
     Route::get('/attendance/{id}', [AdminController::class, 'detail']);

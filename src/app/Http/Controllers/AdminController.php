@@ -8,6 +8,7 @@ use App\Models\User;
 use App\Models\AttendanceRecord;
 use App\Models\Application;
 use Carbon\Carbon;
+use Illuminate\Http\Response;
 
 
 class AdminController extends Controller
@@ -204,5 +205,49 @@ class AdminController extends Controller
 
         return redirect('/stamp_correction_request/list');
     }
-}
 
+
+public function export(Request $request)
+    {
+        $userId = $request->input('user_id');
+        $yearMonth = $request->input('year_month', now()->format('Y-m'));
+        $startDate = Carbon::createFromFormat('Y-m', $yearMonth)->startOfMonth();
+        $endDate = Carbon::createFromFormat('Y-m', $yearMonth)->endOfMonth();
+
+        $staffAttendance = AttendanceRecord::where('user_id', $userId)->whereBetween('date', [$startDate, $endDate])->get();
+
+        $user = User::find($userId);
+        $userName = $user->name;
+
+
+        $csvHeader = [
+            'date', 'clock_in', 'clock_out', 'total_break_time', 'total_time'
+        ];
+        $temps = [];
+        array_push($temps, $csvHeader);
+
+        foreach ($staffAttendance as $staff) {
+            $temp = [
+                Carbon::parse($staff->date)->format('Y/m/d'),
+                Carbon::parse($staff->clock_in)->format('Y/m/d'),
+                Carbon::parse($staff->clock_out)->format('Y/m/d'),
+                $staff->total_break_time,
+                $staff->total_time
+            ];
+            array_push($temps, $temp);
+        }
+        $stream = fopen('php://temp', 'r+b');
+        foreach ($temps as $temp) {
+            fputcsv($stream, $temp);
+        }
+        rewind($stream);
+        $csv = str_replace(PHP_EOL, "\r\n", stream_get_contents($stream));
+        $csv = mb_convert_encoding($csv, 'SJIS-win', 'UTF-8');
+        $filename = "{$userName}さんの勤怠リスト.csv";
+        $headers = array(
+            'Content-Type' => 'text/csv',
+            'Content-Disposition' => 'attachment; filename='.$filename,
+        );
+        return response($csv, 200, $headers);
+    }
+}

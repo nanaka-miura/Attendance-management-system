@@ -63,7 +63,12 @@
         @endforeach
     </table>
     <div class="csv-button">
-        <button class="csv-button__submit">CSV出力</button>
+        <form action="/export" method="post">
+        @csrf
+            <input type="hidden" name="user_id" value="{{ $user->id }}">
+            <input type="hidden" name="year_month" value="{{ now()->format('Y-m') }}">
+            <input class="csv-button__submit" type="submit" value="エクスポート">
+        </form>
     </div>
 </div>
 @endsection
