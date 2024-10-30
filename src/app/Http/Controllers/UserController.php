@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\User;
 use App\Models\Application;
 use Carbon\Carbon;
+use App\Http\Requests\CorrectionRequest;
 
 class UserController extends Controller
 {
@@ -181,7 +182,7 @@ class UserController extends Controller
         return view('user/user-detail', compact('user', 'attendanceRecord','application'));
     }
 
-    public function amendmentApplication(Request $request, $id)
+    public function amendmentApplication(CorrectionRequest $request, $id)
     {
         $user = Auth::user();
         $attendance = AttendanceRecord::findOrFail($id);
@@ -218,7 +219,7 @@ class UserController extends Controller
     public function applicationList()
     {
         $user = Auth::user();
-        $applications = Application::all();
+        $applications = Application::where('user_id', $user->id)->get();
         $attendance = AttendanceRecord::get('id');
 
         return view('user/user-application-list', compact('user', 'applications', 'attendance'));

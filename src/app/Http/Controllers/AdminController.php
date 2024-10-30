@@ -9,7 +9,7 @@ use App\Models\AttendanceRecord;
 use App\Models\Application;
 use Carbon\Carbon;
 use Illuminate\Http\Response;
-
+use App\Http\Requests\CorrectionRequest;
 
 class AdminController extends Controller
 {
@@ -94,7 +94,7 @@ class AdminController extends Controller
         return view('admin/admin-detail', compact('user', 'attendanceRecord', 'application'));
     }
 
-    public function amendmentApplication(Request $request, $id)
+    public function amendmentApplication(CorrectionRequest $request, $id)
     {
         $attendance = AttendanceRecord::findOrFail($id);
         $user = User::findOrFail($attendance->user_id);

@@ -31,8 +31,8 @@
     height: 80px;
 }
 
-.form__group:not(:last-of-type) {
-    border-bottom: 2px solid #E1E1E1;
+.form__group:not(:first-of-type) {
+    border-top: 2px solid #E1E1E1;
 }
 
 .form__header {
@@ -112,4 +112,15 @@
     color: rgba(255, 0, 0, 0.5);
     content: '*';
     font-weight: bold;
+}
+
+.error-message {
+    color: #FF0000;
+    margin-bottom: 10px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.error-message__item {
+    width: 55%;
 }

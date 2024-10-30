@@ -34,12 +34,34 @@
                     <input class="form__input" type="text" name="new_clock_out" value="{{ $attendanceRecord['clock_out'] }}">
                 </div>
             </div>
+            <div class="error-message">
+                <div></div>
+                <div class="error-message__item">
+                    @error('new_clock_in')
+                        {{ $message }}
+                    @enderror
+                    @error('new_clock_out')
+                        {{ $message }}
+                    @enderror
+                </div>
+            </div>
             <div class="form__group">
                 <p class="form__header">休憩</p>
                 <div class="form__input-group">
                     <input class="form__input" type="text" name="new_break_in" value="{{ $attendanceRecord['break_in'] }}">
                     <p>〜</p>
                     <input class="form__input" type="text" name="new_break_out" value="{{ $attendanceRecord['break_out'] }}">
+                </div>
+            </div>
+            <div class="error-message">
+                <div></div>
+                <div class="error-message__item">
+                    @error('new_break_in')
+                        {{ $message }}
+                    @enderror
+                    @error('new_break_out')
+                        {{ $message }}
+                    @enderror
                 </div>
             </div>
             <div class="form__group">
@@ -50,17 +72,36 @@
                     <input class="form__input" type="text" name="new_break2_out" value="{{ $attendanceRecord['break2_out'] }}">
                 </div>
             </div>
+            <div class="error-message">
+                <div></div>
+                <div class="error-message__item">
+                    @error('new_break2_in')
+                        {{ $message }}
+                    @enderror
+                    @error('new_break2_out')
+                        {{ $message }}
+                    @enderror
+                </div>
+            </div>
             <div class="form__group">
                 <p class="form__header">備考</p>
                 <div class="form__input-group">
                     <textarea class="form__textarea" name="comment" id="">{{ $attendanceRecord['comment'] }}</textarea>
                 </div>
             </div>
+            <div class="error-message">
+                <div></div>
+                <div class="error-message__item">
+                    @error ('comment')
+                        {{ $message }}
+                    @enderror
+                </div>
+            </div>
         </div>
         <div class="form__button">
             <button class="form__button--submit" type="submit">修正</button>
         </div>
-        @elseif (!$application->isEmpty)
+        @elseif (!$application->isEmpty())
         <div class="form__content">
             <div class="form__group">
                 <p class="form__header">名前</p>

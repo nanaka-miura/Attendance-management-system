@@ -7,6 +7,9 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\MiddlewareController;
 use App\Http\Middleware\AdminStatusMiddleware;
 use Laravel\Fortify\Http\Controllers\VerifyEmailController;
+use Illuminate\Http\Request;
+use App\Http\Requests\CorrectionRequest;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -23,10 +26,6 @@ Route::middleware('auth')->group(function () {
     Route::get('/attendance', [UserController::class, 'index']);
     Route::post('/attendance', [UserController::class, 'attendance']);
     Route::get('/attendance/list', [UserController::class, 'list']);
-
-    Route::get('/stamp_correction_request/list', [UserController::class, 'applicationList'])->name('userApplicationList')->middleware(AdminStatusMiddleware::class);
-    Route::get('/attendance/{id}', [UserController::class, 'detail']);
-    Route::post('/attendance/{id}', [UserController::class, 'amendmentApplication']);
 });
 
 Route::middleware(['auth'])->group(function () {
@@ -37,10 +36,36 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/stamp_correction_request/approve/{id}', [AdminController::class, 'approvalShow']);
     Route::post('/stamp_correction_request/approve/{id}', [AdminController::class, 'approval']);
     Route::post('/export', [AdminController::class, 'export']);
+});
 
-    Route::get('/stamp_correction_request/list', [AdminController::class, 'applicationList'])->name('adminApplicationList')->middleware(AdminStatusMiddleware::class);
-    Route::get('/attendance/{id}', [AdminController::class, 'detail']);
-    Route::post('/attendance/{id}/', [AdminController::class, 'amendmentApplication']);
+Route::middleware(['auth', AdminStatusMiddleware::class])->group(function () {
+    Route::get('/stamp_correction_request/list', function (Request $request) {
+        if ($request->headers->has('referer') && str_contains($request->headers->get('referer'), '/admin')) {
+            if (auth()->user()->admin_status) {
+                return app(AdminController::class)->applicationList($request);
+            }
+        } else {
+            return app(UserController::class)->applicationList($request);
+        }
+    });
+    Route::get('/attendance/{id}', function ($id, Request $request) {
+        if ($request->headers->has('referer') && str_contains($request->headers->get('referer'), '/admin')) {
+            if (auth()->user()->admin_status) {
+                return app(AdminController::class)->detail($id);
+            }
+        } else {
+            return app(UserController::class)->detail($id);
+        }
+    });
+    Route::post('/attendance/{id}', function (CorrectionRequest $request, $id) {
+        if ($request->headers->has('referer') && str_contains($request->headers->get('referer'), '/admin')) {
+            if (auth()->user()->admin_status) {
+                return app(AdminController::class)->amendmentApplication($request, $id);
+            }
+        } else {
+            return app(UserController::class)->amendmentApplication($request, $id);
+        }
+    });
 });
 
 Route::get('/admin/login', [AuthController::class, 'adminLogin']);

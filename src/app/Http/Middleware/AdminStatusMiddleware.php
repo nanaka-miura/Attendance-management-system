@@ -16,14 +16,7 @@ class AdminStatusMiddleware
      */
     public function handle(Request $request, Closure $next)
     {
-        if ($request->is('/stamp_correction_request/list')) {
-            if (str_contains($request->headers->get('referer'), '/admin')) {
-                return redirect()->route('adminApplicationList');
-            } else {
-                return redirect()->route('userApplicationList');
-            }
-        }
-
+        
         return $next($request);
     }
 }
