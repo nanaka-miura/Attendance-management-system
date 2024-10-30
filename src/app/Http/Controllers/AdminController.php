@@ -112,16 +112,15 @@ class AdminController extends Controller
         if ($request->new_break_in) {
         $amendment->new_break_in = Carbon::parse($request->new_break_in)->format('H:i');
     }
-    
+
     if ($request->new_break_out) {
         $amendment->new_break_out = Carbon::parse($request->new_break_out)->format('H:i');
     }
-    
-    // break2のチェック
+
     if ($request->new_break2_in) {
         $amendment->new_break2_in = Carbon::parse($request->new_break2_in)->format('H:i');
     }
-    
+
     if ($request->new_break2_out) {
         $amendment->new_break2_out = Carbon::parse($request->new_break2_out)->format('H:i');
     }
@@ -210,7 +209,7 @@ class AdminController extends Controller
 public function export(Request $request)
     {
         $userId = $request->input('user_id');
-        $yearMonth = $request->input('year_month', now()->format('Y-m'));
+        $yearMonth = $request->input('year_month');
         $startDate = Carbon::createFromFormat('Y-m', $yearMonth)->startOfMonth();
         $endDate = Carbon::createFromFormat('Y-m', $yearMonth)->endOfMonth();
 
@@ -229,8 +228,8 @@ public function export(Request $request)
         foreach ($staffAttendance as $staff) {
             $temp = [
                 Carbon::parse($staff->date)->format('Y/m/d'),
-                Carbon::parse($staff->clock_in)->format('Y/m/d'),
-                Carbon::parse($staff->clock_out)->format('Y/m/d'),
+                Carbon::parse($staff->clock_in)->format('H:i'),
+                Carbon::parse($staff->clock_out)->format('H:i'),
                 $staff->total_break_time,
                 $staff->total_time
             ];

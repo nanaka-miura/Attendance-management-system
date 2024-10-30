@@ -66,7 +66,7 @@
         <form action="/export" method="post">
         @csrf
             <input type="hidden" name="user_id" value="{{ $user->id }}">
-            <input type="hidden" name="year_month" value="{{ now()->format('Y-m') }}">
+            <input type="hidden" name="year_month" value="{{ $date->format('Y-m') }}">
             <input class="csv-button__submit" type="submit" value="エクスポート">
         </form>
     </div>
