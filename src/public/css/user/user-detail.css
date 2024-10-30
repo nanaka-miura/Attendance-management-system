@@ -174,3 +174,14 @@
 .applied-form__text--item {
     color: #FF0000;
 }
+
+.readonly-message {
+    color: rgba(255, 0, 0, 0.5);
+    font-weight: bold;
+}
+
+.readonly-message::before {
+    color: rgba(255, 0, 0, 0.5);
+    content: '*';
+    font-weight: bold;
+}

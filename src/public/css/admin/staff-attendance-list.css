@@ -1,5 +1,6 @@
 .attendance-list__content {
     background: #F0EFF2;
+    height: 100vh;
     margin: 0 auto;
     max-width: 1540px;
     padding: 50px;
@@ -119,7 +120,9 @@
 }
 
 .csv-button {
-    margin-top: 30px;
+    margin: 0 auto;
+    margin-top: 50px;
+    max-width: 100vh;
     text-align: right;
 }
 

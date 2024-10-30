@@ -11,6 +11,7 @@
     </div>
     <form class="form" action="{{ url('/attendance/' . $attendanceRecord['id']) }}" method="post">
         @csrf
+        @if ($application->isEmpty())
         <div class="form__content">
             <div class="form__group">
                 <p class="form__header">名前</p>
@@ -57,8 +58,58 @@
             </div>
         </div>
         <div class="form__button">
-            <button class="form__button--submit">修正</button>
+            <button class="form__button--submit" type="submit">修正</button>
         </div>
+        @elseif (!$application->isEmpty)
+        <div class="form__content">
+            <div class="form__group">
+                <p class="form__header">名前</p>
+                <div class="form__input-group">
+                    <input class="form__input form__input--name readonly" type="text" name="name" value="{{ $user->name }}" readonly>
+                </div>
+            </div>
+            <div class="form__group">
+                <p class="form__header">日付</p>
+                <div class="form__input-group">
+                    <input class="form__input readonly" type="text" value="{{ $attendanceRecord['year'] }}" readonly>
+                    <input class="form__input readonly"  type="text" name="new_date" value="{{ $attendanceRecord['date'] }}" readonly>
+                </div>
+            </div>
+            <div class="form__group">
+                <p class="form__header">出勤・退勤</p>
+                <div class="form__input-group">
+                    <input class="form__input readonly" type="text" name="new_clock_in" value="{{ $attendanceRecord['clock_in'] }}" readonly>
+                    <p>〜</p>
+                    <input class="form__input readonly" type="text" name="new_clock_out" value="{{ $attendanceRecord['clock_out'] }}" readonly>
+                </div>
+            </div>
+            <div class="form__group">
+                <p class="form__header">休憩</p>
+                <div class="form__input-group">
+                    <input class="form__input readonly" type="text" name="new_break_in" value="{{ $attendanceRecord['break_in'] }}" readonly>
+                    <p>〜</p>
+                    <input class="form__input readonly" type="text" name="new_break_out" value="{{ $attendanceRecord['break_out'] }}" readonly>
+                </div>
+            </div>
+            <div class="form__group">
+                <p class="form__header">休憩2</p>
+                <div class="form__input-group">
+                    <input class="form__input readonly" type="text" name="new_break2_in" value="{{ $attendanceRecord['break2_in'] }}" readonly>
+                    <p>〜</p>
+                    <input class="form__input readonly" type="text" name="new_break2_out" value="{{ $attendanceRecord['break2_out'] }}" readonly>
+                </div>
+            </div>
+            <div class="form__group">
+                <p class="form__header">備考</p>
+                <div class="form__input-group">
+                    <textarea class="form__textarea readonly" name="comment" id="" readonly>{{ $attendanceRecord['comment'] }}</textarea>
+                </div>
+            </div>
+        </div>
+        <div class="form__button">
+            <p class="readonly-message">承認待ちのため修正できません</p>
+        </div>
+        @endif
     </form>
 </div>
 @endsection

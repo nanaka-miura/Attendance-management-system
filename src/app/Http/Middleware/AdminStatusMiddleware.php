@@ -4,9 +4,8 @@ namespace App\Http\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 
-class CheckAdminStatus
+class AdminStatusMiddleware
 {
     /**
      * Handle an incoming request.
@@ -17,13 +16,13 @@ class CheckAdminStatus
      */
     public function handle(Request $request, Closure $next)
     {
-        if ($request->is('stamp_correction_request/list')) {
-        // アクセス前のパスに '/admin' が含まれているかチェック
-        if (str_contains($request->headers->get('referer'), '/admin')) {
-            // adminApplicationListにリダイレクト
-            return redirect()->route('adminApplicationList');
+        if ($request->is('/stamp_correction_request/list')) {
+            if (str_contains($request->headers->get('referer'), '/admin')) {
+                return redirect()->route('adminApplicationList');
+            } else {
+                return redirect()->route('userApplicationList');
+            }
         }
-    }
 
         return $next($request);
     }

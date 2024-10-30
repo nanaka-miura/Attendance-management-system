@@ -162,6 +162,8 @@ class UserController extends Controller
         $attendanceRecords = AttendanceRecord::findOrFail($id);
         $user = User::findOrFail($attendanceRecords->user_id);
 
+        $application = Application::where('attendance_record_id', $attendanceRecords->id)->where('approval_status', '承認待ち')->get();
+
         $attendanceRecord = [
             'application' => $attendanceRecords->application,
             'id' => $attendanceRecords->id,
@@ -176,7 +178,7 @@ class UserController extends Controller
             'comment' => $attendanceRecords->comment,
         ];
 
-        return view('user/user-detail', compact('user', 'attendanceRecord'));
+        return view('user/user-detail', compact('user', 'attendanceRecord','application'));
     }
 
     public function amendmentApplication(Request $request, $id)

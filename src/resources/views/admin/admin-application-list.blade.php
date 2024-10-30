@@ -94,7 +94,7 @@
                         <p class="table__description--item">{{ $application->user->name }}</p>
                     </td>
                     <td class="table__description">
-                        <p class="table__description--item">{{ $application->AttendanceRecord->date }}</p>
+                        <p class="table__description--item">{{ $application->AttendanceRecord->date->format('Y-m-d') }}</p>
                     </td>
                     <td class="table__description">
                         <p class="table__description--item">{{ $application->comment }}</p>

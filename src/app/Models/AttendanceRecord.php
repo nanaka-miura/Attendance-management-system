@@ -40,8 +40,8 @@ class AttendanceRecord extends Model
         return $this->belongsTo(User::class);
     }
 
-    public function attendanceRecords()
+    public function applications()
     {
-        return $this->hasMany(AttendanceRecord::class);
+        return $this->hasMany(Application::class);
     }
 }
