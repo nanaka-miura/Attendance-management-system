@@ -7,10 +7,18 @@ use App\Http\Requests\AdminLoginRequest;
 use App\Http\Requests\LoginRequest;
 use App\Http\Requests\RegisterRequest;
 use Illuminate\Support\Facades\Auth;
+use App\Actions\Fortify\CreateNewUser;
 
 
 class AuthController extends Controller
 {
+    protected $creator;
+
+    public function __construct(CreateNewUser $creator)
+    {
+        $this->creator = $creator;
+    }
+
     public function adminLogin()
     {
         return view('admin/admin-login');
@@ -25,9 +33,14 @@ class AuthController extends Controller
                 return redirect('admin/attendance/list');
             } else {
                 Auth::logout();
-                return redirect('/admin/login');
+                return redirect()->back()->withErrors([
+                    'email' => 'ログイン情報が登録されていません'
+                ]);
             }
         }
+        return redirect()->back()->withErrors([
+        'email' => 'ログイン情報が登録されていません'
+        ])->withInput();
     }
 
     public function adminLogout()
@@ -63,7 +76,7 @@ class AuthController extends Controller
     }
 
     return redirect()->back()->withErrors([
-        'email' => 'ログイン情報が一致しません。'
+        'email' => 'ログイン情報が登録されていません'
     ]);
     }
 

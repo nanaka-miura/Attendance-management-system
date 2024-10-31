@@ -9,6 +9,11 @@
     <div class="register__heading">
         <h2 class="register__heading--item">会員登録</h2>
     </div>
+    @if(session('message'))
+    <div class="alert-success">
+        {{ session('message') }}
+    </div>
+    @endif
     <form class="form" action="/register" method="post">
         @csrf
         <div class="form__group">

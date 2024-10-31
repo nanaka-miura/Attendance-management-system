@@ -46,8 +46,8 @@ class AttendanceRecordFactory extends Factory
             'break_out' => $break_out,
             'break2_in' => $break2_in,
             'break2_out' => $break2_out,
-            'total_time' => gmdate('H:i', $total_time), // 時間を H:i:s フォーマットに変換
-            'total_break_time' => gmdate('H:i', $total_break_time), // 時間を H:i:s フォーマットに変換
+            'total_time' => gmdate('H:i', $total_time),
+            'total_break_time' => gmdate('H:i', $total_break_time),
         ];
     }
 }

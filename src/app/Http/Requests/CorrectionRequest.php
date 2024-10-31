@@ -37,11 +37,17 @@ class CorrectionRequest extends FormRequest
     public function messages()
     {
         return [
+            'new_clock_in.required' => '出勤時間を入力してください。',
+            'new_clock_out.required' => '退勤時間を入力してください。',
             'new_clock_out.after' => '出勤時間もしくは退勤時間が不適切な値です。',
+            'new_break_in.before' => '休憩時間が勤務時間外です。',
             'new_break_in.after' => '休憩時間が勤務時間外です。',
             'new_break_out.before' => '休憩時間が勤務時間外です。',
+            'new_break_out.after' => '休憩時間が勤務時間外です。',
+            'new_break2_in.before' => '休憩時間が勤務時間外です。',
             'new_break2_in.after' => '休憩時間が勤務時間外です。',
             'new_break2_out.before' => '休憩時間が勤務時間外です。',
+            'new_break2_out.after' => '休憩時間が勤務時間外です。',
             'comment.required' => '備考を記入してください。'
         ];
     }

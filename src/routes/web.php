@@ -58,10 +58,8 @@ Route::middleware(['auth', AdminStatusMiddleware::class])->group(function () {
         }
     });
     Route::post('/attendance/{id}', function (CorrectionRequest $request, $id) {
-        if ($request->headers->has('referer') && str_contains($request->headers->get('referer'), '/admin')) {
-            if (auth()->user()->admin_status) {
-                return app(AdminController::class)->amendmentApplication($request, $id);
-            }
+        if (auth()->user()->admin_status) {
+            return app(AdminController::class)->amendmentApplication($request, $id);
         } else {
             return app(UserController::class)->amendmentApplication($request, $id);
         }

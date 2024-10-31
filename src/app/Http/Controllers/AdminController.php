@@ -99,32 +99,61 @@ class AdminController extends Controller
         $attendance = AttendanceRecord::findOrFail($id);
         $user = User::findOrFail($attendance->user_id);
 
-        $amendment = new Application();
-        $amendment->user_id = $user->id;
-        $amendment->attendance_record_id = $attendance->id;
-        $amendment->approval_status = "承認待ち";
-        $amendment->application_date = now();
         $dateString = $request->new_date;
         $parsedDate = Carbon::createFromFormat('n月j日', $dateString)->year(now()->year)->format('Y-m-d');
-        $amendment->new_date = $parsedDate;
-        $amendment->new_clock_in = Carbon::parse($request->new_clock_in)->format('H:i');
-        $amendment->new_clock_out = Carbon::parse($request->new_clock_out)->format('H:i');
+
+        $attendance->date = $parsedDate;
+        $attendance->clock_in = Carbon::parse($request->new_clock_in)->format('H:i');
+        $attendance->clock_out = Carbon::parse($request->new_clock_out)->format('H:i');
         if ($request->new_break_in) {
-            $amendment->new_break_in = Carbon::parse($request->new_break_in)->format('H:i');
+            $attendance->break_in = Carbon::parse($request->new_break_in)->format('H:i');
+        } else {
+            $attendance->break_in = null;
         }
         if ($request->new_break_out) {
-            $amendment->new_break_out = Carbon::parse($request->new_break_out)->format('H:i');
+            $attendance->break_out = Carbon::parse($request->new_break_out)->format('H:i');
+        } else {
+            $attendance->break_out = null;
         }
         if ($request->new_break2_in) {
-            $amendment->new_break2_in = Carbon::parse($request->new_break2_in)->format('H:i');
+            $attendance->break2_in = Carbon::parse($request->new_break2_in)->format('H:i');
+        } else {
+            $attendance->break2_in = null;
         }
         if ($request->new_break2_out) {
-            $amendment->new_break2_out = Carbon::parse($request->new_break2_out)->format('H:i');
+            $attendance->break2_out = Carbon::parse($request->new_break2_out)->format('H:i');
+        } else {
+            $attendance->break2_out = null;
         }
-        $amendment->comment = $request->comment;
-        $amendment->save();
+        $attendance->comment = $request->comment;
 
-        return redirect('/stamp_correction_request/list');
+        $clockIn = Carbon::parse($attendance->clock_in);
+            $clockOut = Carbon::parse($attendance->clock_out);
+
+        $totalBreakTime = 0;
+        if ($attendance->break_in && $attendance->break_out) {
+            $breakIn = Carbon::parse($attendance->break_in);
+            $breakOut = Carbon::parse($attendance->break_out);
+            $totalBreakTime += $breakIn->diffInMinutes($breakOut);
+        }
+        if ($attendance->break2_in && $attendance->break2_out) {
+            $break2In = Carbon::parse($attendance->break2_in);
+            $break2Out = Carbon::parse($attendance->break2_out);
+            $totalBreakTime += $break2In->diffInMinutes($break2Out);
+        }
+        $totalBreakHours = floor($totalBreakTime / 60);$totalBreakMinutes = $totalBreakTime % 60;
+        $attendance->total_break_time = sprintf('%02d:%02d', $totalBreakHours, $totalBreakMinutes);
+
+        $totalWorkedMinutes = $clockIn->diffInMinutes($clockOut) - $totalBreakTime;
+
+        $hours = floor($totalWorkedMinutes / 60);
+            $minutes = $totalWorkedMinutes % 60;
+
+        $attendance->total_time = sprintf('%02d:%02d', $hours, $minutes);
+
+        $attendance->save();
+
+        return app(AdminController::class)->detail($id);
     }
 
     public function applicationList()
@@ -151,7 +180,7 @@ class AdminController extends Controller
         return view('admin/admin-application-detail', compact('user', 'application'));
     }
 
-    public function approval($id)
+    public function approval(Request $request, $id)
     {
         $application = Application::findOrFail($id);
         $user = User::findOrFail($application->user_id);
@@ -198,7 +227,7 @@ class AdminController extends Controller
 
         $attendanceRecord->save();
 
-        return redirect('/stamp_correction_request/list');
+        return app(AdminController::class)->applicationList($id);
     }
 
 

@@ -65,3 +65,9 @@
     color: #ff0000;
     margin-bottom: 30px;
 }
+
+.alert-success {
+    color: #ff0000;
+    margin: 0 auto;
+    max-width: 100vh;
+}

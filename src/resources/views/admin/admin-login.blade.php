@@ -30,7 +30,7 @@
                 @csrf
                 <div class="form__group">
                     <span class="form__label">メールアドレス</span>
-                    <input class="form__input" type="email" name="email">
+                    <input class="form__input" type="email" name="email" value="{{ old('email') }}">
                     <div class="form__error">
                         @error ('email')
                         {{ $message }}
@@ -41,7 +41,7 @@
                     <span class="form__label">パスワード</span>
                     <input class="form__input" type="password" name="password">
                     <div class="form__error">
-                        @error ('email')
+                        @error ('password')
                         {{ $message }}
                         @enderror
                     </div>
