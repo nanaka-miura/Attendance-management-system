@@ -23,11 +23,8 @@ Lavaral環境構築
 ・MailHog latest  
 
 ## ER図
-![er](https://github.com/user-attachments/assets/c66d0511-5706-4380-a066-d4a83e72ff3e)
-![er](https://github.com/user-attachments/assets/c66d0511-5706-4380-a066-d4a83e72ff3e)
-![er](https://github.com/user-attachments/assets/c66d0511-5706-4380-a066-d4a83e72ff3e)
-![er](https://github.com/user-attachments/assets/c66d0511-5706-4380-a066-d4a83e72ff3e)
-![er](https://github.com/user-attachments/assets/c66d0511-5706-4380-a066-d4a83e72ff3e)
+![er](https://github.com/user-attachments/assets/323ed7be-88a0-474d-8af5-6ee5764329e4)
+
 
   
 
