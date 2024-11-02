@@ -22,8 +22,6 @@ class AttendanceRecordFactory extends Factory
         $clock_in = \DateTime::createFromFormat('Y-m-d H:i:s', $date . ' ' . $this->faker->time('H:i:s'));
         $clock_out = $this->faker->dateTimeBetween($clock_in, \DateTime::createFromFormat('Y-m-d H:i:s', $date . ' 24:00:00'));
 
-
-
         $break_time_limit = 2 * 60 * 60;
         $break_in = $this->faker->dateTimeBetween($clock_in, $clock_out);
         $break_out = $this->faker->dateTimeBetween($break_in, $clock_out);

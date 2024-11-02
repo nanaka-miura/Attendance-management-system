@@ -165,6 +165,8 @@ class UserController extends Controller
 
         $application = Application::where('attendance_record_id', $attendanceRecords->id)->where('approval_status', '承認待ち')->get();
 
+        $applicationData = Application::where('attendance_record_id', $attendanceRecords->id)->first();
+
         $attendanceRecord = [
             'application' => $attendanceRecords->application,
             'id' => $attendanceRecords->id,
@@ -179,7 +181,7 @@ class UserController extends Controller
             'comment' => $attendanceRecords->comment,
         ];
 
-        return view('user/user-detail', compact('user', 'attendanceRecord','application'));
+        return view('user/user-detail', compact('user', 'attendanceRecord','application', 'applicationData'));
     }
 
     public function amendmentApplication(CorrectionRequest $request, $id)

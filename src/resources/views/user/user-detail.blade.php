@@ -113,37 +113,37 @@
                 <p class="form__header">日付</p>
                 <div class="form__input-group">
                     <input class="form__input readonly" type="text" value="{{ $attendanceRecord['year'] }}" readonly>
-                    <input class="form__input readonly"  type="text" name="new_date" value="{{ $attendanceRecord['date'] }}" readonly>
+                    <input class="form__input readonly"  type="text" name="new_date" value="{{ $applicationData['new_date'] }}" readonly>
                 </div>
             </div>
             <div class="form__group">
                 <p class="form__header">出勤・退勤</p>
                 <div class="form__input-group">
-                    <input class="form__input readonly" type="text" name="new_clock_in" value="{{ $attendanceRecord['clock_in'] }}" readonly>
+                    <input class="form__input readonly" type="text" name="new_clock_in" value="{{ $applicationData['new_clock_in'] }}" readonly>
                     <p>〜</p>
-                    <input class="form__input readonly" type="text" name="new_clock_out" value="{{ $attendanceRecord['clock_out'] }}" readonly>
+                    <input class="form__input readonly" type="text" name="new_clock_out" value="{{ $applicationData['new_clock_out'] }}" readonly>
                 </div>
             </div>
             <div class="form__group">
                 <p class="form__header">休憩</p>
                 <div class="form__input-group">
-                    <input class="form__input readonly" type="text" name="new_break_in" value="{{ $attendanceRecord['break_in'] }}" readonly>
+                    <input class="form__input readonly" type="text" name="new_break_in" value="{{ $applicationData['new_break_in'] }}" readonly>
                     <p>〜</p>
-                    <input class="form__input readonly" type="text" name="new_break_out" value="{{ $attendanceRecord['break_out'] }}" readonly>
+                    <input class="form__input readonly" type="text" name="new_break_out" value="{{ $applicationData['new_break_out'] }}" readonly>
                 </div>
             </div>
             <div class="form__group">
                 <p class="form__header">休憩2</p>
                 <div class="form__input-group">
-                    <input class="form__input readonly" type="text" name="new_break2_in" value="{{ $attendanceRecord['break2_in'] }}" readonly>
+                    <input class="form__input readonly" type="text" name="new_break2_in" value="{{ $applicationData['new_break2_in'] }}" readonly>
                     <p>〜</p>
-                    <input class="form__input readonly" type="text" name="new_break2_out" value="{{ $attendanceRecord['break2_out'] }}" readonly>
+                    <input class="form__input readonly" type="text" name="new_break2_out" value="{{ $applicationData['new_break2_out'] }}" readonly>
                 </div>
             </div>
             <div class="form__group">
                 <p class="form__header">備考</p>
                 <div class="form__input-group">
-                    <textarea class="form__textarea readonly" name="comment" id="" readonly>{{ $attendanceRecord['comment'] }}</textarea>
+                    <textarea class="form__textarea readonly" name="comment" id="" readonly>{{ $applicationData['comment'] }}</textarea>
                 </div>
             </div>
         </div>

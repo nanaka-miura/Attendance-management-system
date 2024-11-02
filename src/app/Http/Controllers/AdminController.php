@@ -224,43 +224,41 @@ class AdminController extends Controller
 
             $attendanceRecord->total_time = sprintf('%02d:%02d', $hours, $minutes);
 
+            $attendanceRecord->save();
 
-        $attendanceRecord->save();
-
-        return app(AdminController::class)->applicationList($id);
-    }
-
-
-public function export(Request $request)
-    {
-        $userId = $request->input('user_id');
-        $yearMonth = $request->input('year_month');
-        $startDate = Carbon::createFromFormat('Y-m', $yearMonth)->startOfMonth();
-        $endDate = Carbon::createFromFormat('Y-m', $yearMonth)->endOfMonth();
-
-        $staffAttendance = AttendanceRecord::where('user_id', $userId)->whereBetween('date', [$startDate, $endDate])->get();
-
-        $user = User::find($userId);
-        $userName = $user->name;
-
-
-        $csvHeader = [
-            'date', 'clock_in', 'clock_out', 'total_break_time', 'total_time'
-        ];
-        $temps = [];
-        array_push($temps, $csvHeader);
-
-        foreach ($staffAttendance as $staff) {
-            $temp = [
-                Carbon::parse($staff->date)->format('Y/m/d'),
-                Carbon::parse($staff->clock_in)->format('H:i'),
-                Carbon::parse($staff->clock_out)->format('H:i'),
-                $staff->total_break_time,
-                $staff->total_time
-            ];
-            array_push($temps, $temp);
+            return app(AdminController::class)->applicationList($id);
         }
-        $stream = fopen('php://temp', 'r+b');
+
+        public function export(Request $request)
+        {
+            $userId = $request->input('user_id');
+            $yearMonth = $request->input('year_month');
+            $startDate = Carbon::createFromFormat('Y-m', $yearMonth)->startOfMonth();
+            $endDate = Carbon::createFromFormat('Y-m', $yearMonth)->endOfMonth();
+
+            $staffAttendance = AttendanceRecord::where('user_id', $userId)->whereBetween('date', [$startDate, $endDate])->get();
+
+            $user = User::find($userId);
+            $userName = $user->name;
+
+
+            $csvHeader = [
+                '日付', '出勤時間', '退勤時間', '休憩時間', '勤務時間'
+            ];
+            $temps = [];
+            array_push($temps, $csvHeader);
+
+            foreach ($staffAttendance as $staff) {
+                $temp = [
+                    Carbon::parse($staff->date)->format('Y/m/d'),
+                    Carbon::parse($staff->clock_in)->format('H:i'),
+                    Carbon::parse($staff->clock_out)->format('H:i'),
+                    $staff->total_break_time,
+                    $staff->total_time
+                ];
+                array_push($temps, $temp);
+            }
+            $stream = fopen('php://temp', 'r+b');
         foreach ($temps as $temp) {
             fputcsv($stream, $temp);
         }

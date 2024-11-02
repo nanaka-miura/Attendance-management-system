@@ -59,7 +59,9 @@ Route::middleware(['auth', AdminStatusMiddleware::class])->group(function () {
     });
     Route::post('/attendance/{id}', function (CorrectionRequest $request, $id) {
         if (auth()->user()->admin_status) {
-            return app(AdminController::class)->amendmentApplication($request, $id);
+            if (auth()->user()->admin_status) {
+                return app(AdminController::class)->amendmentApplication($request, $id);
+            }
         } else {
             return app(UserController::class)->amendmentApplication($request, $id);
         }
