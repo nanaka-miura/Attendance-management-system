@@ -170,12 +170,12 @@ class AdminController extends Controller
         $user = User::findOrFail($application->user_id);
 
         $application->new_date = Carbon::parse($application->new_date);
-        $application->new_clock_in = Carbon::parse($application->new_clock_in)->format('H:i');
-        $application->new_clock_out = Carbon::parse($application->new_clock_out)->format('H:i');
-        $application->new_break_in = Carbon::parse($application->new_break_in)->format('H:i');
-        $application->new_break_out = Carbon::parse($application->new_break_out)->format('H:i');
-        $application->new_break2_in = Carbon::parse($application->new_break2_in)->format('H:i');
-        $application->new_break2_out = Carbon::parse($application->new_break2_out)->format('H:i');
+        $application->new_clock_in = $application->new_clock_in ? Carbon::parse($application->new_clock_in)->format('H:i') : null;
+        $application->new_clock_out = $application->new_clock_out ? Carbon::parse($application->new_clock_out)->format('H:i') : null;
+        $application->new_break_in = $application->new_break_in ? Carbon::parse($application->new_break_in)->format('H:i') : null;
+        $application->new_break_out = $application->new_break_out ? Carbon::parse($application->new_break_out)->format('H:i') : null;
+        $application->new_break2_in = $application->nre_break2_in ? Carbon::parse($application->new_break2_in)->format('H:i') : null;
+        $application->new_break2_out = $application->new_break2_out ? Carbon::parse($application->new_break2_out)->format('H:i') : null;
 
         return view('admin/admin-application-detail', compact('user', 'application'));
     }

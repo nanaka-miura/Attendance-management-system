@@ -19,7 +19,7 @@ class UsersTableSeeder extends Seeder
                 'name' => 'ユーザー１',
                 'email' => 'user1@example.com',
                 'password' => bcrypt('password'),
-                'admin_status' => true,
+                'admin_status' => false,
                 'attendance_status' => '勤務外'
             ],
             [
@@ -33,7 +33,7 @@ class UsersTableSeeder extends Seeder
                 'name' => 'ユーザー３',
                 'email' => 'user3@example.com',
                 'password' => bcrypt('password'),
-                'admin_status' => false,
+                'admin_status' => true,
                 'attendance_status' => '勤務外'
             ]
         ];
