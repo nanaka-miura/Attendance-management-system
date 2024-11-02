@@ -7,7 +7,9 @@ Dockerビルド
 Lavaral環境構築  
 1.docker-compose exec php bash  
 2.composer install  
-3..env.exampleファイルから.envを作成し、環境変数を変更  
+3.cp .env.example .env  
+4..envファイルの環境変数を変更  
+5..envファイルのMAIL_FROM_ADDRESSに送信元アドレスを設定  
 4.php artisan key:generate  
 5.php artisan migrate  
 6.php artisan db:seed  
