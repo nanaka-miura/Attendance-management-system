@@ -13,8 +13,7 @@ Lavaral環境構築
 4.php artisan key:generate  
 5.php artisan migrate  
 6.php artisan db:seed  
-7.php artisan test  
-8.php artisan storage:link  
+7.php artisan test   
 
 
 ## 使用技術
