@@ -17,7 +17,7 @@ class AttendanceRecordFactory extends Factory
     {
         $userIds = User::pluck('id');
 
-        $date = $this->faker->dateTimeBetween('2024-01-01', '2024-10-31')->format('Y-m-d');
+        $date = $this->faker->dateTimeBetween('2024-01-01', '2024-12-31')->format('Y-m-d');
 
         $clock_in = \DateTime::createFromFormat('Y-m-d H:i:s', $date . ' ' . $this->faker->time('H:i:s'));
         $clock_out = $this->faker->dateTimeBetween($clock_in, \DateTime::createFromFormat('Y-m-d H:i:s', $date . ' 24:00:00'));

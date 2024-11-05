@@ -52,7 +52,6 @@ class UserAttendanceTest extends TestCase
         $user = User::all()->random();
         $this->actingAs($user);
 
-
         $previousMonth = now()->subMonth();
 
         $response = $this->get('/attendance/list');
@@ -71,7 +70,6 @@ class UserAttendanceTest extends TestCase
         $nextMonth = now()->addMonth();
 
         $response = $this->get('/attendance/list');
-
 
         $response->assertStatus(200);
 

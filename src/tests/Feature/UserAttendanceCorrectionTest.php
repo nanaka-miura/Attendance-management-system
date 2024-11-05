@@ -149,10 +149,10 @@ class UserAttendanceCorrectionTest extends TestCase
         $response->assertStatus(200);
         $response->assertSee($user->name);
 
-        $response = $this->get('/stamp_correction_request/list');$response->assertStatus(200);
+        $response = $this->get('/stamp_correction_request/list');
+        $response->assertStatus(200);
         $response->assertSee('承認待ち');
-        $response->assertSee($user->name);
-
+        $response->assertSee($application->date);
     }
 
     /** @test */
@@ -188,7 +188,7 @@ class UserAttendanceCorrectionTest extends TestCase
     {
         $user = User::all()->random();
         $this->actingAs($user);
-        
+
         $attendanceRecord = AttendanceRecord::where('user_id', $user->id)->first();
 
         $application = Application::create([
@@ -218,7 +218,7 @@ class UserAttendanceCorrectionTest extends TestCase
 
         $response->assertStatus(200);
         $response->assertSee('承認済み');
-        $response->assertSee($user->name);
+        $response->assertSee($application->date);
     }
 
     /** @test */

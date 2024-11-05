@@ -8,6 +8,7 @@ use Tests\TestCase;
 use App\Models\User;
 use App\Models\AttendanceRecord;
 use Database\Seeders\DatabaseSeeder;
+use Illuminate\Support\Carbon;
 
 class AdminAttendanceTest extends TestCase
 {
@@ -30,14 +31,14 @@ class AdminAttendanceTest extends TestCase
         $today = now()->format('Y-m-d');
         $attendanceRecords = AttendanceRecord::whereDate('date', $today)->get();
 
+        $response = $this->get('/admin/attendance/list');
+
         foreach ($attendanceRecords as $record) {
             $response->assertSee($record->user->name);
-            $response->assertSee($record->clock_in);
-            $response->assertSee($record->clock_out);
+            $response->assertSee(Carbon::parse($record->clock_in)->format('H:i'));
+            $response->assertSee(Carbon::parse($record->clock_out)->format('H:i'));
         }
-
         $response->assertStatus(200);
-
     }
 
     /** @test */
@@ -63,12 +64,12 @@ class AdminAttendanceTest extends TestCase
 
         $attendanceRecords = AttendanceRecord::whereDate('date', $previousDay)->get();
 
-        $response = $this->get('/attendance?date=' . $previousDay->format('Y年m月d日'));
+        $response = $this->get('/admin/attendance/list?date=' . $previousDay->format('Y-m-d'));
 
         foreach ($attendanceRecords as $record) {
             $response->assertSee($record->user->name);
-            $response->assertSee($record->clock_in);
-            $response->assertSee($record->clock_out);
+            $response->assertSee(Carbon::parse($record->clock_in)->format('H:i'));
+            $response->assertSee(Carbon::parse($record->clock_out)->format('H:i'));
         }
         $response->assertStatus(200);
 
@@ -86,14 +87,13 @@ class AdminAttendanceTest extends TestCase
 
         $attendanceRecords = AttendanceRecord::whereDate('date', $nextDay)->get();
 
-        $response = $this->get('/attendance?date=' . $nextDay->format('Y年m月d日'));
+        $response = $this->get('/admin/attendance/list?date=' . $nextDay->format('Y-m-d'));
 
         foreach ($attendanceRecords as $record) {
             $response->assertSee($record->user->name);
-            $response->assertSee($record->clock_in);
-            $response->assertSee($record->clock_out);
+            $response->assertSee(Carbon::parse($record->clock_in)->format('H:i'));
+            $response->assertSee(Carbon::parse($record->clock_out)->format('H:i'));
         }
         $response->assertStatus(200);
-
     }
 }

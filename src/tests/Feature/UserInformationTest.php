@@ -52,8 +52,8 @@ class UserInformationTest extends TestCase
         $response->assertStatus(200);
         foreach ($attendanceRecords as $record) {
             $response->assertSee($record->date);
-            $response->assertSee($record->clock_in);
-            $response->assertSee($record->clock_out);
+            $response->assertSee(Carbon::parse($record->clock_in)->format('H:i'));
+            $response->assertSee(Carbon::parse($record->clock_out)->format('H:i'));
         }
     }
 
@@ -65,18 +65,18 @@ class UserInformationTest extends TestCase
 
         $user = User::all()->random();
 
-        $response = $this->get('/admin/attendance/staff' . $user->id);
+        $response = $this->get('/admin/attendance/list');
 
-        $previousMonth = now()->addMonth();
+        $previousMonth = now()->subMonth();
 
         $attendanceRecords = AttendanceRecord::whereDate('date', $previousMonth)->get();
 
-        $response = $this->get('/attendance?date=' . $previousMonth->format('Y年m月d日'));
+        $response = $this->get('/admin/attendance/list?date=' . $previousMonth->format('Y-m-d'));
 
         foreach ($attendanceRecords as $record) {
             $response->assertSee($record->user->name);
-            $response->assertSee($record->clock_in);
-            $response->assertSee($record->clock_out);
+            $response->assertSee(Carbon::parse($record->clock_in)->format('H:i'));
+            $response->assertSee(Carbon::parse($record->clock_out)->format('H:i'));
         }
         $response->assertStatus(200);
     }
@@ -89,18 +89,18 @@ class UserInformationTest extends TestCase
 
         $user = User::all()->random();
 
-        $response = $this->get('/admin/attendance/staff' . $user->id);
+        $response = $this->get('/admin/attendance/list');
 
         $nextMonth = now()->addMonth();
 
         $attendanceRecords = AttendanceRecord::whereDate('date', $nextMonth)->get();
 
-        $response = $this->get('/attendance?date=' . $nextMonth->format('Y年m月d日'));
+        $response = $this->get('/admin/attendance/list?date=' . $nextMonth->format('Y-m-d'));
 
         foreach ($attendanceRecords as $record) {
             $response->assertSee($record->user->name);
-            $response->assertSee($record->clock_in);
-            $response->assertSee($record->clock_out);
+            $response->assertSee(Carbon::parse($record->clock_in)->format('H:i'));
+            $response->assertSee(Carbon::parse($record->clock_out)->format('H:i'));
         }
         $response->assertStatus(200);
     }
