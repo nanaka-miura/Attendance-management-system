@@ -8,12 +8,16 @@ Lavaral環境構築
 1.docker-compose exec php bash  
 2.composer install  
 3.cp .env.example .env  
-4..envファイルの環境変数を変更  
-5..envファイルのMAIL_FROM_ADDRESSに送信元アドレスを設定  
-4.php artisan key:generate  
-5.php artisan migrate  
-6.php artisan db:seed  
-7.php artisan test   
+4..envファイルの変更  
+ (1)DB_HOSTをmysqlに変更  
+ (2)DB_DATABASEをlaravel_dbに変更  
+ (3)DB_USERNAMEをlaravel_userに変更  
+ (4)DB_PASSをlaravel_passに変更  
+ (5)MAIL_FROM_ADDRESSに送信元アドレスを設定  
+5.php artisan key:generate  
+6.php artisan migrate  
+7.php artisan db:seed  
+8.php artisan test   
 
 
 ## 使用技術
